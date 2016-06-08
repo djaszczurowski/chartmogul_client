@@ -4,18 +4,16 @@ module ChartmogulClient::V1
       raise "path must be overriden for #{self.class}"
     end
 
-    def method
-      raise "method must be overriden for #{self.class}"
+    def http_method
+      raise "http method must be overriden for #{self.class}"
     end
 
-    def as_json(arg)
-      raise "as_json must be overriden for #{self.class}"
-    end
-
-    def headers
-      {
-        'Content-Type' => 'application/json'
-      }
+    def http_headers
+      @http_headers ||=
+        {
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json'
+        }
     end
   end
 end
