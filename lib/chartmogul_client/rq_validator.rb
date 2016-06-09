@@ -1,11 +1,30 @@
 module ChartmogulClient::RqValidator
   def self.valid?(request)
+    valid, errors = run_basic_validation(request)
+
+    return [valid, errors] unless valid
+
     validator = try_find_custom_validator(request)
 
     if validator
       validator.valid?(request)
     else
       [true, []]
+    end
+  end
+
+  def self.run_basic_validation(request)
+    case request.api_version
+    when ChartmogulClient::Consts::ApiVersions::V1
+      errors = []
+
+      if request.security_key.nil? || request.account_token.nil?
+        errors << 'security_key/account_token missing'
+      end
+
+      [errors.empty?, errors]
+    else
+      raise "Unknown API version #{request.api_version}"
     end
   end
 
@@ -27,4 +46,5 @@ module ChartmogulClient::RqValidator
   end
 
   private_class_method :try_find_custom_validator
+  private_class_method :run_basic_validation
 end
