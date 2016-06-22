@@ -33,10 +33,10 @@ describe ChartmogulClient::HttpClient do
           input_rq = HttpClientTestRq.new(test_http_method)
           input_rq.security_key = 'security_key'
           input_rq.account_token = 'account_token'
-          input_rq.base_url = "http://example.com"
+          input_rq.base_url = "https://example.com"
 
-          stub_request(test_http_method, "http://example.com/test").
-             with(body: { 'body_attribute' => 'body_attribute_value' }.to_json, basic_auth: ['account_token', 'security_key'], :headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/json', 'Host'=>'example.com', 'User-Agent'=>'Ruby'}).
+          stub_request(test_http_method, "https://example.com/v1/test").
+             with(body: "{\"body_attribute\":\"body_attribute_value\"}", basic_auth: ['account_token', 'security_key'], :headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
              to_return(:status => 200, :body => {'status' => 'ok'}.to_json , :headers => {'Content-Type' => 'application/json'})
 
           body, status = subject.call(input_rq)

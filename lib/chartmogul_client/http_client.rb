@@ -3,13 +3,12 @@ require 'multi_json'
 
 module ChartmogulClient::HttpClient
   def self.call(input_rq)
-    uri = URI("#{input_rq.base_url}#{input_rq.path}")
+    uri = URI("#{input_rq.base_url}/#{input_rq.api_version}#{input_rq.path}")
 
-    Net::HTTP.start(uri.host, uri.port) do |http_connection|
-      http_request = http_request_from_method(input_rq.http_method, uri)
+    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http_connection|
+      http_request = http_request_from_method(input_rq, uri)
       http_request.basic_auth(input_rq.account_token, input_rq.security_key)
-      http_request.body = input_rq.http_request_body.to_json
-      input_rq.http_headers.each { |k, v| http_request[k] = v }
+      http_request.body = MultiJson.dump(input_rq.http_request_body)
 
       http_response = http_connection.request(http_request)
 
@@ -17,10 +16,12 @@ module ChartmogulClient::HttpClient
     end
   end
 
-  def self.http_request_from_method(http_method, uri)
+  def self.http_request_from_method(input_rq, uri)
+    http_method = input_rq.http_method
+
     case http_method
-    when :get then Net::HTTP::Get.new(uri)
-    when :post then Net::HTTP::Post.new(uri)
+    when :get then Net::HTTP::Get.new(uri, input_rq.http_headers)
+    when :post then Net::HTTP::Post.new(uri.request_uri, input_rq.http_headers)
     else
       raise "Can't create http request, unknown http method: #{http_method}"
     end

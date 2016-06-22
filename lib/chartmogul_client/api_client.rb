@@ -12,7 +12,7 @@ module ChartmogulClient::ApiClient
 
     api_response(body, status)
   rescue => e
-    api_response(nil, ChartmogulClient::Consts::HttpStatuses::SERVER_ERROR, [e.message])
+    api_response(nil, ChartmogulClient::Consts::HttpStatuses::SERVER_ERROR, ["#{e.message}", "#{e.backtrace}"])
   end
 
   def self.api_response(body, status, errors = [])

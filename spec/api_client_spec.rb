@@ -42,7 +42,8 @@ describe ChartmogulClient::ApiClient do
 
         expect(response.body).to be(nil)
         expect(response.status).to be(500)
-        expect(response.errors).to eq(["Error message"])
+        expect(response.errors.length).to eq(2)
+        expect(response.errors[0]).to eq('Error message')
       end
     end
   end

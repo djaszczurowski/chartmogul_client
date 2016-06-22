@@ -1,6 +1,6 @@
 module ChartmogulClient::Consts
   module ApiVersions
-    V1 = 'V1'
+    V1 = 'v1'
   end
 
   module HttpStatuses
