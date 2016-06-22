@@ -13,6 +13,11 @@ module ChartmogulClient
       call_rq(rq)
     end
 
+    def test_import_data_sources_list_rq
+      rq = create_rq(ChartmogulClient::V1::Import::DataSources::ListRq)
+      call_rq(rq)
+    end
+
     private
 
     def create_rq(klass)
