@@ -3,7 +3,7 @@ module ChartmogulClient::V1::Import::DataSources
     attr_accessor :name
 
     def path
-      '/import/data_source'
+      '/import/data_sources'
     end
 
     def http_method
