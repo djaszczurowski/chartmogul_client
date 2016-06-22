@@ -6,9 +6,9 @@ module ChartmogulClient
       @base_url = base_url
     end
 
-    def test_import_data_sources_create_rq
+    def test_import_data_sources_create_rq(options = {})
       rq = create_rq(ChartmogulClient::V1::Import::DataSources::CreateRq)
-      rq.name = "Test name"
+      rq.name = options.fetch(:name, "Test name")
 
       call_rq(rq)
     end
