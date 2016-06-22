@@ -45,10 +45,15 @@ describe ChartmogulClient::RqValidator::CustomValidator do
   context 'when validator for request found in tested_rq_directory/validators/tested_rq_validator' do
     it 'returns validator result' do
       rq = ChartmogulClient::V1::Test::WithValidatorRq.new
-      validator_result = [true, []]
+      validator_result = []
 
       expect(ChartmogulClient::V1::Test::Validators::WithValidatorRqValidator).to receive(:valid?).with(rq).and_return(validator_result)
-      expect(subject.valid?(rq)).to eq(validator_result)
+      expect(subject.valid?(rq)).to eq([true, []])
+
+      validator_result = ['anything']
+
+      expect(ChartmogulClient::V1::Test::Validators::WithValidatorRqValidator).to receive(:valid?).with(rq).and_return(validator_result)
+      expect(subject.valid?(rq)).to eq([false, ['anything']])
     end
   end
 end

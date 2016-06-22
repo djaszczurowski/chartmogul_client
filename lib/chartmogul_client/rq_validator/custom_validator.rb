@@ -15,6 +15,8 @@ module ChartmogulClient::RqValidator::CustomValidator
       raise "Validator #{validator_name} should respond to valid?"
     end
 
-    validator.valid?(request)
+    errors = validator.valid?(request)
+
+    [errors.empty?, errors]
   end
 end
