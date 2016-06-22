@@ -23,5 +23,9 @@ module ChartmogulClient::V1
           'Accept' => 'application/json'
         }
     end
+
+    def http_request_body
+      raise "http request body must be overriden for #{self.class}"
+    end
   end
 end

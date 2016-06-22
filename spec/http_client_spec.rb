@@ -18,6 +18,12 @@ describe ChartmogulClient::HttpClient do
     def http_method
       @test_http_method
     end
+
+    def http_request_body
+      {
+        'body_attribute' => 'body_attribute_value'
+      }
+    end
   end
 
   describe 'call' do
@@ -30,7 +36,7 @@ describe ChartmogulClient::HttpClient do
           input_rq.base_url = "http://example.com"
 
           stub_request(test_http_method, "http://example.com/test").
-             with(basic_auth: ['account_token', 'security_key'], :headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/json', 'Host'=>'example.com', 'User-Agent'=>'Ruby'}).
+             with(body: { 'body_attribute' => 'body_attribute_value' }.to_json, basic_auth: ['account_token', 'security_key'], :headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/json', 'Host'=>'example.com', 'User-Agent'=>'Ruby'}).
              to_return(:status => 200, :body => {'status' => 'ok'}.to_json , :headers => {'Content-Type' => 'application/json'})
 
           body, status = subject.call(input_rq)

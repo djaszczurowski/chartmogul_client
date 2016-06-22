@@ -8,6 +8,7 @@ module ChartmogulClient::HttpClient
     Net::HTTP.start(uri.host, uri.port) do |http_connection|
       http_request = http_request_from_method(input_rq.http_method, uri)
       http_request.basic_auth(input_rq.account_token, input_rq.security_key)
+      http_request.body = input_rq.http_request_body.to_json
       input_rq.http_headers.each { |k, v| http_request[k] = v }
 
       http_response = http_connection.request(http_request)
