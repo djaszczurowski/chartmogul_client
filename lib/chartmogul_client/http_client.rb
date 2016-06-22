@@ -1,4 +1,5 @@
 require 'net/http'
+require 'multi_json'
 
 module ChartmogulClient::HttpClient
   def self.call(input_rq)
@@ -11,7 +12,7 @@ module ChartmogulClient::HttpClient
 
       http_response = http_connection.request(http_request)
 
-      [http_response.body, http_response.code.to_i]
+      [MultiJson.load(http_response.body), http_response.code.to_i]
     end
   end
 

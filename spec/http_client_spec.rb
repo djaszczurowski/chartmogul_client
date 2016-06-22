@@ -35,7 +35,7 @@ describe ChartmogulClient::HttpClient do
 
           body, status = subject.call(input_rq)
 
-          expect(body).to eq("{\"status\":\"ok\"}")
+          expect(body).to eq({ "status" => "ok" })
           expect(status).to eq(200)
         end
       end
