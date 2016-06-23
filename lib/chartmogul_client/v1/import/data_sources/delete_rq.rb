@@ -11,7 +11,7 @@ module ChartmogulClient::V1::Import::DataSources
     end
 
     def http_request_body
-      {}
+      nil
     end
 
     def http_headers
