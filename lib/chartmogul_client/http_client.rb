@@ -12,7 +12,11 @@ module ChartmogulClient::HttpClient
 
       http_response = http_connection.request(http_request)
 
-      [MultiJson.load(http_response.body), http_response.code.to_i]
+      begin
+        [MultiJson.load(http_response.body), http_response.code.to_i]
+      rescue => e
+        raise "Failed when parsing API response. Original response: #{http_response.body}"
+      end
     end
   end
 
