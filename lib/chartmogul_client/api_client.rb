@@ -1,5 +1,5 @@
 module ChartmogulClient::ApiClient
-  def self.call(request)
+  def self.call(request, logger = ChartmogulClient::Loggers::NullLogger.new)
     rq_valid, errors = ChartmogulClient::RqValidator.valid?(request)
 
     unless rq_valid
@@ -8,7 +8,7 @@ module ChartmogulClient::ApiClient
       )
     end
 
-    body, status = ChartmogulClient::HttpClient.call(request)
+    body, status = ChartmogulClient::HttpClient.call(request, logger)
 
     api_response(body, status)
   rescue => e

@@ -2,15 +2,19 @@ require 'net/http'
 require 'multi_json'
 
 module ChartmogulClient::HttpClient
-  def self.call(input_rq)
+  def self.call(input_rq, logger)
     uri = URI("#{input_rq.base_url}/#{input_rq.api_version}#{input_rq.path}")
+    logger.debug("request uri: #{uri}")
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http_connection|
       http_request = http_request_from_method(input_rq, uri)
       http_request.basic_auth(input_rq.account_token, input_rq.security_key)
 
       http_request.body = prepare_request_body(input_rq)
+      logger.debug("request body: #{http_request.body}")
+
       http_response = http_connection.request(http_request)
+      logger.debug("API code/response: #{http_response.code}/#{http_response.body}")
 
       begin
         prepare_response(http_response)

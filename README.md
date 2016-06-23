@@ -31,8 +31,8 @@ General flow is
   rq.security_key = "security_key"
   rq.account_token = "account_token"
 
-  #4. call api client
-  response = ChartmogulClient::ApiClient.call(rq)
+  #4. call api client; logger is optional.
+  response = ChartmogulClient::ApiClient.call(rq, logger)
 
   #5. read from response.
   response.body #parsed JSON from API

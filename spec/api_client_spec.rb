@@ -4,12 +4,13 @@ describe ChartmogulClient::ApiClient do
   subject { described_class }
 
   let(:request) { instance_double(ChartmogulClient::V1::BaseRq) }
+  let(:logger) { instance_double(ChartmogulClient::Loggers::NullLogger) }
 
   context 'when request is invalid' do
     it 'returns 400 with error messages' do
       expect(ChartmogulClient::RqValidator).to receive(:valid?).and_return([false, ["name must be present"]])
 
-      response = subject.call(request)
+      response = subject.call(request, logger)
 
       expect(response.status).to eq(400)
       expect(response.errors).to eq(["name must be present"])
@@ -23,9 +24,9 @@ describe ChartmogulClient::ApiClient do
         response_status = 201
 
         expect(ChartmogulClient::RqValidator).to receive(:valid?).and_return([true])
-        expect(ChartmogulClient::HttpClient).to receive(:call).with(request).and_return([response_body, response_status])
+        expect(ChartmogulClient::HttpClient).to receive(:call).with(request, logger).and_return([response_body, response_status])
 
-        response = subject.call(request)
+        response = subject.call(request, logger)
 
         expect(response.body).to be(response_body)
         expect(response.status).to be(response_status)
@@ -38,7 +39,7 @@ describe ChartmogulClient::ApiClient do
         expect(ChartmogulClient::RqValidator).to receive(:valid?).and_return([true])
         expect(ChartmogulClient::HttpClient).to receive(:call).and_raise("Error message")
 
-        response = subject.call(request)
+        response = subject.call(request, logger)
 
         expect(response.body).to be(nil)
         expect(response.status).to be(500)

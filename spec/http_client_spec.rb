@@ -39,7 +39,7 @@ describe ChartmogulClient::HttpClient do
              with(body: "{\"body_attribute\":\"body_attribute_value\"}", basic_auth: ['account_token', 'security_key'], :headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'}).
              to_return(:status => 200, :body => {'status' => 'ok'}.to_json , :headers => {'Content-Type' => 'application/json'})
 
-          body, status = subject.call(input_rq)
+          body, status = subject.call(input_rq, ChartmogulClient::Loggers::NullLogger.new)
 
           expect(body).to eq({ "status" => "ok" })
           expect(status).to eq(200)

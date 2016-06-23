@@ -4,6 +4,7 @@ module ChartmogulClient
       @account_token = account_token
       @security_key = security_key
       @base_url = base_url
+      @logger = ChartmogulClient::Loggers::TesterLogger.new
     end
 
     def test_import_data_sources_create_rq(options = {})
@@ -39,7 +40,7 @@ module ChartmogulClient
     end
 
     def call_rq(rq)
-      ChartmogulClient::ApiClient.call(rq)
+      ChartmogulClient::ApiClient.call(rq, @logger)
     end
   end
 end
