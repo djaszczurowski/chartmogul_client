@@ -7,4 +7,10 @@ module ChartmogulClient::Consts
     BAD_REQUEST = 400
     SERVER_ERROR = 500
   end
+
+  module HttpMethods
+    GET = :get
+    POST = :post
+    DELETE = :delete
+  end
 end

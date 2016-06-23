@@ -20,8 +20,12 @@ module ChartmogulClient::HttpClient
     http_method = input_rq.http_method
 
     case http_method
-    when :get then Net::HTTP::Get.new(uri, input_rq.http_headers)
-    when :post then Net::HTTP::Post.new(uri.request_uri, input_rq.http_headers)
+    when ChartmogulClient::Consts::HttpMethods::GET
+      Net::HTTP::Get.new(uri, input_rq.http_headers)
+    when ChartmogulClient::Consts::HttpMethods::DELETE
+      Net::HTTP::Delete.new(uri, input_rq.http_headers)
+    when ChartmogulClient::Consts::HttpMethods::POST
+      Net::HTTP::Post.new(uri.request_uri, input_rq.http_headers)
     else
       raise "Can't create http request, unknown http method: #{http_method}"
     end

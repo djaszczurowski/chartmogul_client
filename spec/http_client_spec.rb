@@ -27,7 +27,7 @@ describe ChartmogulClient::HttpClient do
   end
 
   describe 'call' do
-    [:get, :post].each do |test_http_method|
+    [:get, :post, :delete].each do |test_http_method|
       context "#{test_http_method} method" do
         it 'rewrites all headers to http request, adds auth and returns response body with code' do
           input_rq = HttpClientTestRq.new(test_http_method)

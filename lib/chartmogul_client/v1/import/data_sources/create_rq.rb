@@ -7,7 +7,7 @@ module ChartmogulClient::V1::Import::DataSources
     end
 
     def http_method
-      :post
+      ChartmogulClient::Consts::HttpMethods::POST
     end
 
     def http_request_body

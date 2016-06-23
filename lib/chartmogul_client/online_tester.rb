@@ -18,6 +18,16 @@ module ChartmogulClient
       call_rq(rq)
     end
 
+    def test_import_data_sources_delete_rq
+      response = test_import_data_sources_list_rq
+      data_sources = ((response.body || {})['data_sources'] || [])
+      raise "No items to delete" if data_sources.empty?
+
+      rq = create_rq(ChartmogulClient::V1::Import::DataSources::DeleteRq)
+      rq.uuid = data_sources.first['uuid']
+      call_rq(rq)
+    end
+
     private
 
     def create_rq(klass)
