@@ -44,8 +44,18 @@ General flow is
 In order to test library, you may start with creating ChartmogulClient::OnlineTester
 ```ruby
 tester = ChartmogulClient::OnlineTester.new(account_token, security_key)
-tester.test_import_data_sources_create_rq # will create new data source with default name
-tester.test_import_data_sources_list_rq # will return all your data sources
+
+#Import::DataSources::CreateRq
+tester.import_data_sources_create_rq(options)
+
+#Import::DataSources::ListRq
+tester.import_data_sources_list_rq
+
+#Import::DataSources::DeleteRq
+tester.import_data_sources_delete_rq(uuid)
+
+#Import::Customers::ImportRq
+tester.import_customers_import_rq(options)
 ```
 
 ## License

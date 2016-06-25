@@ -15,10 +15,12 @@ module ChartmogulClient::HttpClient
 
       http_response = http_connection.request(http_request)
       logger.debug("API code/response: #{http_response.code}/#{http_response.body}")
+      logger.debug("API headers: #{http_response.to_hash}")
 
       begin
         prepare_response(http_response)
       rescue => e
+        logger.error(e.message)
         raise "Failed when parsing API response. Original code: #{http_response.code}; response: #{http_response.body}"
       end
     end
@@ -36,8 +38,13 @@ module ChartmogulClient::HttpClient
     code = http_response.code.to_i
     body = http_response.body
 
-    if http_response['content-type'].include?('application/json')
-      body = MultiJson.load(body)
+    body = case http_response['content-type']
+    when nil
+      http_response.body
+    when /application\/json/
+      MultiJson.load(http_response.body)
+    else
+      http_response.body
     end
 
     [body, code]
